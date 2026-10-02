@@ -1,206 +1,150 @@
 # Student Attendance Logging System
 
-Isang simple at madaling gamiting website para sa pag-record ng **Time In** at **Time Out** ng mga estudyante.
+A simple, beginner-friendly website for recording student **Time In** and **Time Out**.
 
-Hindi kailangan ng installation, account, o server. Buksan lamang ang `index.html` gamit ang browser.
+You can open **index.html** directly in a browser, or publish the project through Railway or GitHub Pages.
 
-## Ano ang kayang gawin?
+## Main features
 
-- Magdagdag, mag-edit, at magtanggal ng estudyante
-- Maglagay ng Student ID at Grade/Section/Course
-- Pumili muna ng section bago pumili ng estudyante
-- Mag-record ng Time In at Time Out
-- Makita kung On time o Late ang estudyante
-- Makita ang bilang ng present, late, at kabuuang oras
-- Hanapin ang estudyante gamit ang pangalan o Student ID
-- Ayusin ang student list ayon sa section
-- Salain ang attendance records ayon sa petsa, section, o estudyante
-- Mag-download ng attendance bilang CSV
-- Gumawa at mag-restore ng JSON backup
-- Gamitin sa computer, tablet, o cellphone
+- Add, edit, search, and delete students
+- Organize students by grade, section, or course
+- Record Time In and Time Out
+- Automatically mark attendance as On time or Late
+- Show daily totals for present students, late students, and recorded hours
+- Filter attendance by date, section, or student
+- Export attendance records as a CSV file
+- Download and restore a JSON backup
+- Switch between light and dark themes
+- Use the system on a computer, tablet, or phone
 
-## Sample data
+## Included sample data
 
-Sa unang pagbukas ng website, awtomatikong lalabas ang:
+The first time the website opens, it creates:
 
-- **100 fictional sample students**
-- **10 sections**
-- **10 students sa bawat section**
-- Student IDs mula **2026-001** hanggang **2026-100**
+- 100 fictional sample students
+- 10 sections
+- 10 students in each section
+- Student IDs from 2026-001 to 2026-100
 
-Sample lamang ang mga pangalan. Maaari silang i-edit o tanggalin.
+The sample students can be edited or deleted.
 
-Kasamang sample sections:
+## Quick start
 
-- Grade 7 - Rizal
-- Grade 7 - Mabini
-- Grade 8 - Bonifacio
-- Grade 8 - Luna
-- Grade 9 - Jacinto
-- Grade 9 - Del Pilar
-- Grade 10 - Aguinaldo
-- Grade 10 - Silang
-- Grade 11 - STEM A
-- Grade 12 - HUMSS A
+1. Open the project folder.
+2. Double-click **index.html**.
+3. The system will open in Chrome, Edge, Firefox, or another modern browser.
 
-## Pinakamadaling paraan para buksan
+No installation is required for this basic method.
 
-1. Hanapin ang project folder.
-2. I-double-click ang `index.html`.
-3. Bubukas ang system sa Chrome, Edge, Firefox, o ibang modernong browser.
+## How to record attendance
 
-Walang kailangang i-install.
+### Time In
 
-## Paano gamitin
+1. Open the Dashboard.
+2. Select a section.
+3. Select a student.
+4. Click **Time In**.
 
-### Pag-time in
+### Time Out
 
-1. Pumunta sa **Dashboard**.
-2. Piliin ang section.
-3. Piliin ang pangalan ng estudyante.
-4. Pindutin ang **Time In**.
+1. Select the same section and student.
+2. Click **Time Out**.
 
-### Pag-time out
+A student is marked **Late** when the Time In is later than 8:15 AM.
 
-1. Piliin ulit ang section at estudyante.
-2. Pindutin ang **Time Out**.
+## How to add a student
 
-Ang estudyante ay itinuturing na **Late** kapag nag-time in pagkalipas ng **8:15 AM**.
+1. Open **Students**.
+2. Click **New student**.
+3. Enter the full name, Student ID, and grade or section.
+4. Click **Save**.
 
-### Pagdagdag ng estudyante
+The system automatically uses the grade or section to group and filter students.
 
-1. Pumunta sa **Mga Estudyante**.
-2. Pindutin ang **Bagong estudyante**.
-3. Ilagay ang buong pangalan, Student ID, at section.
-4. Pindutin ang **I-save**.
+## Attendance records
 
-Awtomatikong ginagamit ng system ang inilagay na section para sa pag-group at pag-filter.
+1. Open **Attendance Records**.
+2. Use the date, section, or student filters when needed.
+3. Click **Export CSV** to open the records in Excel or Google Sheets.
 
-### Pagtingin ng records
+## Where is the data saved?
 
-1. Pumunta sa **Attendance Records**.
-2. Pumili ng petsa, section, o estudyante kung gusto mong paliitin ang listahan.
-3. Pindutin ang **Export CSV** kung gusto mong buksan ang records sa Excel o Google Sheets.
+The current version stores data in the browser's local storage.
 
-## Saan naka-save ang data?
+Think of it as a small notebook kept inside one browser:
 
-Ang data ay naka-save sa **local storage ng browser**.
+- Closing or refreshing the browser does not remove the data.
+- A different browser or device has a separate copy of the data.
+- Clearing browser data may delete attendance records.
+- Data does not automatically sync between devices.
 
-Sa madaling salita, isipin ito na parang maliit na notebook na nasa loob mismo ng browser:
+This project does not yet use a shared online database. For regular school use, use one designated computer and create backups often.
 
-- Kapag isinara ang browser, naroon pa rin ang data.
-- Kapag ni-refresh ang page, hindi nawawala ang data.
-- Kapag ibang browser o ibang device ang ginamit, ibang notebook din iyon.
-- Kapag nilinis ang browser data, maaaring mabura ang attendance.
-- Hindi awtomatikong nagsi-sync ang data sa ibang computer.
+## Backup and restore
 
-### Mahalagang paalala tungkol sa GitHub Pages
+To create a backup:
 
-Kapag na-live ang website sa GitHub Pages, gagana ang system pero **hindi magiging shared database** ang attendance.
+1. Click **Backup and restore** in the menu.
+2. Click **Download backup**.
+3. Keep the downloaded JSON file in a safe folder.
 
-Halimbawa:
+To restore a backup:
 
-- Ang attendance na ginawa sa laptop ng teacher ay nasa laptop/browser na iyon.
-- Ang attendance na ginawa sa cellphone ng student ay nasa cellphone/browser na iyon.
-- Hindi agad makikita ng teacher ang attendance na ginawa sa ibang device.
+1. Open **Backup and restore**.
+2. Click **Restore backup**.
+3. Select a previously downloaded JSON backup.
 
-Kung kailangan ng iisang shared database para sa lahat, kailangan sa susunod ng online backend tulad ng Firebase, Supabase, o sariling server.
+## Project files
 
-## Backup at restore
+| File | Purpose |
+| --- | --- |
+| **index.html** | The main page opened by the browser |
+| **styles.css** | Colors, layout, responsive design, and themes |
+| **app.js** | Buttons, filters, tables, and screen actions |
+| **database.js** | Students, attendance, sample data, and browser storage |
+| **server.js** | Small web server used by Railway |
+| **package.json** | Project and Railway start settings |
+| **README.md** | Main beginner documentation |
+| **GITHUB-PAGES-GUIDE.md** | GitHub Pages publishing guide |
+| **RAILWAY-GUIDE.md** | Railway deployment guide |
 
-Para hindi madaling mawala ang data:
+## Publish with Railway
 
-1. Pindutin ang **Backup at restore** sa menu.
-2. Piliin ang **I-download ang backup**.
-3. Itago ang downloaded JSON file sa ligtas na folder.
+See [RAILWAY-GUIDE.md](RAILWAY-GUIDE.md) for detailed instructions.
 
-Para ibalik ang data:
+Short version:
 
-1. Buksan ang **Backup at restore**.
-2. Piliin ang **Mag-restore ng backup**.
-3. Piliin ang dating downloaded JSON file.
+1. Push the project to GitHub.
+2. In Railway, choose **New Project → Deploy from GitHub repo**.
+3. Select the repository and deploy it.
+4. Open **Settings → Networking**.
+5. Click **Generate Domain**.
 
-## Mga file sa project
+Railway automatically runs the included Node.js server and uses the port supplied by Railway.
 
-| File | Simpleng paliwanag |
-|---|---|
-| `index.html` | Ito ang pangunahing page na binubuksan ng browser. |
-| `styles.css` | Ito ang kulay, layout, spacing, at mobile design. |
-| `app.js` | Ito ang kumokontrol sa buttons, filters, tables, at screen actions. |
-| `database.js` | Ito ang humahawak sa students, attendance, sample data, at browser storage. |
-| `README.md` | Ito ang pangunahing documentation ng project. |
-| `GITHUB-PAGES-GUIDE.md` | Step-by-step guide para i-upload at i-live sa GitHub Pages. |
-| `RAILWAY-GUIDE.md` | Step-by-step guide para i-deploy sa Railway. |
-| `package.json` | Node.js project settings at Railway start command. |
-| `server.js` | Maliit na web server na ginagamit ng Railway. |
-| `.nojekyll` | Sinasabi nito sa GitHub Pages na direktang i-serve ang static files. |
+## Publish with GitHub Pages
 
-## Paano i-live?
+See [GITHUB-PAGES-GUIDE.md](GITHUB-PAGES-GUIDE.md) for detailed instructions.
 
-May dalawang deployment option ang project.
+Short version:
 
-### Railway
+1. Open the repository settings on GitHub.
+2. Select **Pages**.
+3. Choose **Deploy from a branch**.
+4. Select the **main** branch and **/(root)** folder.
+5. Save and wait for the public link.
 
-Basahin ang [RAILWAY-GUIDE.md](RAILWAY-GUIDE.md) para sa step-by-step instructions.
+## Current limitations
 
-Maikling version:
+- No login or password
+- No teacher or administrator account
+- No central online database
+- No automatic syncing between devices
+- Browser data can be removed when browser storage is cleared
+- Regular backups are required
 
-1. I-push ang lahat ng project files sa GitHub.
-2. Sa Railway, piliin ang **New Project → Deploy from GitHub repo**.
-3. Piliin ang repository at pindutin ang **Deploy Now**.
-4. Pagkatapos ng deployment, pumunta sa **Settings → Networking**.
-5. Pindutin ang **Generate Domain**.
+## Privacy reminder
 
-Walang kailangang external package o manual port setting. Awtomatikong ginagamit ng `server.js` ang port na ibinibigay ng Railway.
+The included 100 students are fictional. Do not place real student information directly in a public GitHub repository.
 
-### GitHub Pages
-
-May detalyadong gabay sa [GITHUB-PAGES-GUIDE.md](GITHUB-PAGES-GUIDE.md).
-
-Maikling version:
-
-1. Gumawa ng bagong public repository sa GitHub.
-2. I-upload ang lahat ng files sa project folder.
-3. Pumunta sa **Settings → Pages**.
-4. Sa **Source**, piliin ang **Deploy from a branch**.
-5. Piliin ang **main** branch at **/(root)** folder.
-6. Pindutin ang **Save**.
-7. Hintayin ang GitHub Pages link.
-
-Ayon sa GitHub, maaaring umabot nang hanggang 10 minuto bago lumabas ang site pagkatapos i-publish.
-
-Official guide: [GitHub Pages documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
-
-## Pagbabago ng sections
-
-Kapag nagdagdag o nag-edit ng estudyante, ilagay lamang ang gustong pangalan ng section sa **Grade / Section / Course**.
-
-Hindi kailangang gumawa ng hiwalay na section page. Awtomatikong kinukuha ng system ang section mula sa student records.
-
-## Mga limitasyon ng kasalukuyang version
-
-- Walang login o password
-- Walang teacher/admin account
-- Walang central online database
-- Walang automatic synchronization sa ibang device
-- Maaaring mabura ang data kapag nilinis ang browser storage
-- Hindi pa ito angkop bilang official school record system nang walang regular backup
-
-## Privacy at safety
-
-Huwag ilagay ang tunay na student records direkta sa source code bago i-upload sa public GitHub repository.
-
-Ang kasamang 100 students ay fictional lamang. Ang aktuwal na attendance na ginagamit sa website ay nasa browser storage at hindi kasama sa repository kapag nag-upload ka ng source files.
-
-## Browser support
-
-Gamitin ang updated version ng:
-
-- Google Chrome
-- Microsoft Edge
-- Mozilla Firefox
-- Safari
-
-## Project status
-
-Ang project ay isang working website at handa nang i-deploy sa Railway o GitHub Pages.
+Actual attendance entered through the website stays in browser storage and is not included in the source files pushed to GitHub.

@@ -1,109 +1,87 @@
-# Paano I-live sa Railway
+# How to Publish on Railway
 
-Ang project ay handa nang i-deploy sa Railway. May kasama na itong maliit na Node.js web server at hindi nangangailangan ng external package.
+This project is ready to deploy on Railway. It includes a small Node.js web server and does not require external packages.
 
-## Mga file na para sa Railway
+## Railway-ready files
 
-- `package.json` — nagsasabi sa Railway na Node.js project ito at kung paano ito sisimulan.
-- `server.js` — naghahatid ng HTML, CSS, at JavaScript files sa internet.
-- `/health` — health-check address na maaaring gamitin para malaman kung tumatakbo ang server.
+- **package.json** tells Railway how to start the project.
+- **server.js** serves the website files.
+- **/health** is a health-check address that confirms the server is running.
 
-## Step-by-step deployment
+## Deployment steps
 
-1. I-upload o i-push ang lahat ng project files sa GitHub repository.
-2. Mag-sign in sa [Railway](https://railway.com/).
-3. Piliin ang **New Project**.
-4. Piliin ang **Deploy from GitHub repo**.
-5. I-connect ang GitHub account kung hinihingi.
-6. Piliin ang repository ng attendance system.
-7. Piliin ang **Deploy Now**.
-8. Hintaying matapos ang build at deployment.
-9. Buksan ang service at pumunta sa **Settings → Networking**.
-10. Pindutin ang **Generate Domain**.
+1. Push all project files to a GitHub repository.
+2. Sign in at [Railway](https://railway.com/).
+3. Click **New Project**.
+4. Choose **Deploy from GitHub repo**.
+5. Connect your GitHub account if Railway asks.
+6. Select the student attendance repository.
+7. Click **Deploy Now**.
+8. Wait for the build and deployment to finish.
+9. Open the service and go to **Settings → Networking**.
+10. Click **Generate Domain**.
 
-Makakakuha ka ng public address na katulad ng:
+Railway will provide a public website address.
 
-```text
-https://student-attendance-production.up.railway.app
-```
+## How Railway starts the app
 
-## Ano ang awtomatikong gagawin ng Railway?
+Railway detects **package.json** and runs:
 
-Makikita ng Railway ang `package.json`, ihahanda ang Node.js runtime, at tatakbuhin ang:
+    npm start
 
-```text
-npm start
-```
-
-Ang server ay awtomatikong gumagamit ng `PORT` na ibinibigay ng Railway. Wala kang kailangang ilagay na port number sa Railway Variables.
+The server automatically uses the PORT value supplied by Railway. You do not need to create a custom port variable.
 
 ## Optional health check
 
-Sa Railway service settings, maaari mong ilagay ang sumusunod bilang Healthcheck Path:
+In the Railway service settings, set the Healthcheck Path to:
 
-```text
-/health
-```
+    /health
 
-Kapag gumagana ang server, magbabalik ito ng:
+A working server returns a response with an OK status.
 
-```json
-{"status":"ok"}
-```
+## Updating the website
 
-## Paano mag-update?
+Edit the project, commit the changes, and push them to the connected GitHub branch. Railway normally creates a new deployment automatically.
 
-I-update ang files sa GitHub at mag-push sa connected branch. Awtomatikong gagawa ang Railway ng bagong deployment.
+If a deployment is waiting for approval, click **Deploy** or **Apply changes** in Railway.
 
-## Mahalagang database reminder
+## Important database reminder
 
-Ang pag-deploy sa Railway ay ginagawang public ang website, pero ang kasalukuyang attendance data ay nasa `localStorage` pa rin ng browser.
+Publishing on Railway makes the website public, but attendance is still stored in each browser's local storage.
 
-- Bawat browser o device ay may sariling records.
-- Hindi pa shared ang database ng teacher at students.
-- Hindi nai-save sa Railway server ang attendance.
-- Gumamit ng Backup at Restore para protektahan ang data.
+- The teacher and students do not share one database.
+- Attendance is not saved on the Railway server.
+- Use **Backup and Restore** to protect the data.
+- Use one designated device when possible.
 
-Kung kailangan ng iisang shared attendance database, kailangan pang magdagdag ng backend API at Railway PostgreSQL database.
+A shared multi-device system would require a backend API and an online database such as Railway PostgreSQL.
 
-## Local testing
+## Test locally
 
-Kung may Node.js sa computer, buksan ang terminal sa project folder at patakbuhin:
+If Node.js is installed, open a terminal in the project folder and run:
 
-```text
-npm start
-```
+    npm start
 
-Pagkatapos, buksan sa browser:
+Then open:
 
-```text
-http://localhost:3000
-```
+    http://localhost:3000
 
-Para subukan ang health endpoint:
+Test the health endpoint at:
 
-```text
-http://localhost:3000/health
-```
+    http://localhost:3000/health
 
 ## Troubleshooting
 
-### Deployment failed
+### Deployment fails
 
-- Siguraduhing kasama ang `package.json` at `server.js` sa root ng repository.
-- Tingnan ang Railway deployment logs.
-- Siguraduhing walang ibang custom Start Command na nakalagay.
+- Confirm that **package.json** and **server.js** are in the repository root.
+- Read the Railway deployment logs.
+- Remove any incorrect custom Start Command.
 
-### Walang public link
+### No public link
 
-Pumunta sa **Settings → Networking** at pindutin ang **Generate Domain**.
+Open **Settings → Networking** and click **Generate Domain**.
 
-### Blank o walang design
+### Page loads without styling
 
-Siguraduhing kasama sa GitHub ang `index.html`, `styles.css`, `app.js`, at `database.js`.
-
-## Official references
-
-- [Railway Quick Start](https://docs.railway.com/quick-start)
-- [Railpack](https://docs.railway.com/builds/railpack)
-- [Railway Services](https://docs.railway.com/services)
+Confirm that **index.html**, **styles.css**, **app.js**, and **database.js** are all in the repository root.

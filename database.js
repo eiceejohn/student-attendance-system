@@ -19,7 +19,7 @@
         sampleStudentsSeeded: data.sampleStudentsSeeded === true
       };
     } catch (error) {
-      console.error("Hindi mabasa ang local database:", error);
+      console.error("Could not read the local database:", error);
       return emptyDatabase();
     }
   }
@@ -86,7 +86,7 @@
     const data = read();
     const code = employee.code.trim().toUpperCase();
     if (data.employees.some((item) => item.code.toUpperCase() === code)) {
-      throw new Error("May gumagamit na ng Student ID na ito.");
+      throw new Error("This Student ID is already in use.");
     }
     const newEmployee = {
       id: makeId("emp"),
@@ -103,10 +103,10 @@
   function updateEmployee(id, updates) {
     const data = read();
     const employee = data.employees.find((item) => item.id === id);
-    if (!employee) throw new Error("Hindi makita ang estudyante.");
+    if (!employee) throw new Error("Student not found.");
     const code = updates.code.trim().toUpperCase();
     if (data.employees.some((item) => item.id !== id && item.code.toUpperCase() === code)) {
-      throw new Error("May gumagamit na ng Student ID na ito.");
+      throw new Error("This Student ID is already in use.");
     }
     employee.name = updates.name.trim();
     employee.code = code;
@@ -118,7 +118,7 @@
   function deleteEmployee(id) {
     const data = read();
     const hasRecords = data.attendance.some((record) => record.employeeId === id);
-    if (hasRecords) throw new Error("May attendance record ang estudyanteng ito kaya hindi siya maaaring burahin.");
+    if (hasRecords) throw new Error("This student has attendance records and cannot be deleted.");
     data.employees = data.employees.filter((item) => item.id !== id);
     write(data);
   }
@@ -138,9 +138,9 @@
   function timeIn(employeeId) {
     const data = read();
     const employee = data.employees.find((item) => item.id === employeeId);
-    if (!employee) throw new Error("Hindi makita ang estudyante.");
+    if (!employee) throw new Error("Student not found.");
     if (data.attendance.some((record) => record.employeeId === employeeId && !record.timeOut)) {
-      throw new Error("Naka-time in na ang estudyanteng ito.");
+      throw new Error("This student is already timed in.");
     }
     const now = new Date();
     const minutes = now.getHours() * 60 + now.getMinutes();
@@ -163,7 +163,7 @@
     const record = data.attendance
       .filter((item) => item.employeeId === employeeId && !item.timeOut)
       .sort((a, b) => new Date(b.timeIn) - new Date(a.timeIn))[0];
-    if (!record) throw new Error("Walang aktibong time in para sa estudyanteng ito.");
+    if (!record) throw new Error("This student has no active time in.");
     record.timeOut = new Date().toISOString();
     write(data);
     return record;
@@ -182,7 +182,7 @@
   function importBackup(jsonText) {
     const parsed = JSON.parse(jsonText);
     if (!parsed || !Array.isArray(parsed.employees) || !Array.isArray(parsed.attendance)) {
-      throw new Error("Hindi valid na attendance backup ang file.");
+      throw new Error("This file is not a valid attendance backup.");
     }
     write({ version: 1, employees: parsed.employees, attendance: parsed.attendance, sampleStudentsSeeded: true });
   }

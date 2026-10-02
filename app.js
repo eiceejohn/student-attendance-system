@@ -43,7 +43,7 @@
   }
 
   function formatDate(value) {
-    return new Intl.DateTimeFormat("fil-PH", { month: "short", day: "numeric", year: "numeric" }).format(new Date(value));
+    return new Intl.DateTimeFormat("en-PH", { month: "short", day: "numeric", year: "numeric" }).format(new Date(value));
   }
 
   function hoursBetween(record, includeRunning = false) {
@@ -88,7 +88,7 @@
     document.documentElement.dataset.theme = selectedTheme;
     elements.themeToggle.setAttribute(
       "aria-label",
-      selectedTheme === "dark" ? "Gamitin ang light mode" : "Gamitin ang dark mode"
+      selectedTheme === "dark" ? "Use light mode" : "Use dark mode"
     );
 
     const themeColor = document.querySelector('meta[name="theme-color"]');
@@ -117,14 +117,14 @@
   function updateClock() {
     const now = new Date();
     $("#liveTime").textContent = new Intl.DateTimeFormat("en-PH", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true }).format(now);
-    $("#todayLabel").textContent = new Intl.DateTimeFormat("fil-PH", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(now);
+    $("#todayLabel").textContent = new Intl.DateTimeFormat("en-PH", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(now);
 
     const hour = now.getHours();
     const greeting = hour < 12
-      ? "Magandang umaga!"
+      ? "Good morning!"
       : hour < 18
-        ? "Magandang hapon!"
-        : "Magandang gabi!";
+        ? "Good afternoon!"
+        : "Good evening!";
     const heroGreeting = $("#heroGreeting");
     if (heroGreeting) heroGreeting.textContent = greeting;
   }
@@ -139,9 +139,9 @@
     const sections = db.getSections();
     const sectionOptions = sections.map((section) => `<option value="${escapeHtml(section)}">${escapeHtml(section)}</option>`).join("");
 
-    elements.clockSectionSelect.innerHTML = '<option value="">Pumili ng section</option>' + sectionOptions;
-    elements.employeeSectionFilter.innerHTML = '<option value="">Lahat ng section</option>' + sectionOptions;
-    elements.recordSectionFilter.innerHTML = '<option value="">Lahat ng section</option>' + sectionOptions;
+    elements.clockSectionSelect.innerHTML = '<option value="">Select a section</option>' + sectionOptions;
+    elements.employeeSectionFilter.innerHTML = '<option value="">All sections</option>' + sectionOptions;
+    elements.recordSectionFilter.innerHTML = '<option value="">All sections</option>' + sectionOptions;
 
     if (sections.includes(selectedClockSection)) elements.clockSectionSelect.value = selectedClockSection;
     if (sections.includes(selectedDirectorySection)) elements.employeeSectionFilter.value = selectedDirectorySection;
@@ -151,10 +151,10 @@
     const sectionStudents = clockSection ? students.filter((student) => student.role === clockSection) : [];
     elements.employeeSelect.disabled = !clockSection;
     elements.employeeSelect.innerHTML = (clockSection
-      ? '<option value="">Pumili ng estudyante</option>'
-      : '<option value="">Pumili muna ng section</option>') +
+      ? '<option value="">Select a student</option>'
+      : '<option value="">Select a section first</option>') +
       sectionStudents.map((student) => `<option value="${student.id}">${escapeHtml(student.name)} · ${escapeHtml(student.code)}</option>`).join("");
-    elements.recordEmployeeFilter.innerHTML = '<option value="">Lahat</option>' +
+    elements.recordEmployeeFilter.innerHTML = '<option value="">All</option>' +
       students.map((student) => `<option value="${student.id}">${escapeHtml(student.name)}</option>`).join("");
 
     if (sectionStudents.some((student) => student.id === selectedStudent)) elements.employeeSelect.value = selectedStudent;
@@ -164,14 +164,14 @@
   function renderEmployeeStatus() {
     const employeeId = elements.employeeSelect.value;
     if (!elements.clockSectionSelect.value) {
-      elements.employeeStatus.textContent = "Pumili muna ng section.";
+      elements.employeeStatus.textContent = "Select a section first.";
       elements.employeeStatus.className = "status-line";
       elements.timeInButton.disabled = true;
       elements.timeOutButton.disabled = true;
       return;
     }
     if (!employeeId) {
-      elements.employeeStatus.textContent = "Pumili muna ng estudyante.";
+      elements.employeeStatus.textContent = "Select a student first.";
       elements.employeeStatus.className = "status-line";
       elements.timeInButton.disabled = true;
       elements.timeOutButton.disabled = true;
@@ -179,12 +179,12 @@
     }
     const openRecord = db.getOpenAttendance(employeeId);
     if (openRecord) {
-      elements.employeeStatus.textContent = `Naka-time in mula ${formatTime(openRecord.timeIn)}.`;
+      elements.employeeStatus.textContent = `Timed in since ${formatTime(openRecord.timeIn)}.`;
       elements.employeeStatus.className = "status-line active";
       elements.timeInButton.disabled = true;
       elements.timeOutButton.disabled = false;
     } else {
-      elements.employeeStatus.textContent = "Handa nang mag-time in.";
+      elements.employeeStatus.textContent = "Ready to time in.";
       elements.employeeStatus.className = "status-line ready";
       elements.timeInButton.disabled = false;
       elements.timeOutButton.disabled = true;
@@ -200,7 +200,7 @@
     $("#employeeCount").textContent = db.getEmployees().length;
 
     elements.todayTableBody.innerHTML = records.map((record) => {
-      const section = studentsById.get(record.employeeId)?.role || "Walang section";
+      const section = studentsById.get(record.employeeId)?.role || "No section";
       return `
       <tr>
         <td><div class="person-cell"><span class="avatar">${escapeHtml(initials(record.employeeName))}</span><div><strong>${escapeHtml(record.employeeName)}</strong><small>${escapeHtml(record.employeeCode)}</small></div></div></td>
@@ -221,10 +221,10 @@
       (!selectedSection || student.role === selectedSection) &&
       `${student.name} ${student.code} ${student.role}`.toLowerCase().includes(query)
     );
-    $("#employeeResultCount").textContent = `${students.length} estudyante`;
+    $("#employeeResultCount").textContent = `${students.length} student${students.length === 1 ? "" : "s"}`;
 
     const groupedStudents = students.reduce((groups, student) => {
-      const section = student.role || "Walang section";
+      const section = student.role || "No section";
       if (!groups[section]) groups[section] = [];
       groups[section].push(student);
       return groups;
@@ -234,7 +234,7 @@
       <section class="section-group">
         <div class="section-heading">
           <div><span class="section-dot"></span><h3>${escapeHtml(section)}</h3></div>
-          <span>${groupedStudents[section].length} estudyante</span>
+          <span>${groupedStudents[section].length} student${groupedStudents[section].length === 1 ? "" : "s"}</span>
         </div>
         <div class="employee-grid">
           ${groupedStudents[section].map((student) => `
@@ -242,8 +242,8 @@
               <span class="avatar large">${escapeHtml(initials(student.name))}</span>
               <div class="employee-info"><h3>${escapeHtml(student.name)}</h3><p>${escapeHtml(student.role)}</p><small>${escapeHtml(student.code)}</small></div>
               <div class="card-menu">
-                <button class="icon-button edit-employee" data-id="${student.id}" type="button" aria-label="I-edit si ${escapeHtml(student.name)}">✎</button>
-                <button class="icon-button delete-employee" data-id="${student.id}" type="button" aria-label="Burahin si ${escapeHtml(student.name)}">×</button>
+                <button class="icon-button edit-employee" data-id="${student.id}" type="button" aria-label="Edit ${escapeHtml(student.name)}">✎</button>
+                <button class="icon-button delete-employee" data-id="${student.id}" type="button" aria-label="Delete ${escapeHtml(student.name)}">×</button>
               </div>
             </article>`).join("")}
         </div>
@@ -266,7 +266,7 @@
         (!selectedSection || section === selectedSection);
     });
     elements.recordsTableBody.innerHTML = records.map((record) => {
-      const section = studentsById.get(record.employeeId)?.role || "Walang section";
+      const section = studentsById.get(record.employeeId)?.role || "No section";
       return `
       <tr>
         <td>${formatDate(record.timeIn)}</td>
@@ -276,7 +276,7 @@
         <td>${formatTime(record.timeOut)}</td>
         <td>${record.timeOut ? `${hoursBetween(record).toFixed(2)} h` : "—"}</td>
         <td><span class="status-badge ${record.status === "Late" ? "late" : "ontime"}">${escapeHtml(record.status)}</span></td>
-        <td><button class="icon-button delete-record" data-id="${record.id}" type="button" aria-label="Burahin ang record">×</button></td>
+        <td><button class="icon-button delete-record" data-id="${record.id}" type="button" aria-label="Delete record">×</button></td>
       </tr>`;
     }).join("");
     elements.recordsEmptyState.hidden = records.length > 0;
@@ -297,12 +297,12 @@
     if (employeeId) {
       const employee = db.getEmployees().find((item) => item.id === employeeId);
       if (!employee) return;
-      $("#employeeDialogTitle").textContent = "I-edit ang Estudyante";
+      $("#employeeDialogTitle").textContent = "Edit Student";
       $("#employeeNameInput").value = employee.name;
       $("#employeeCodeInput").value = employee.code;
       $("#employeeRoleInput").value = employee.role;
     } else {
-      $("#employeeDialogTitle").textContent = "Bagong Estudyante";
+      $("#employeeDialogTitle").textContent = "New Student";
     }
     elements.employeeDialog.showModal();
     setTimeout(() => $("#employeeNameInput").focus(), 50);
@@ -321,7 +321,7 @@
       else db.addEmployee(employee);
       elements.employeeDialog.close();
       renderAll();
-      showToast(editingId ? "Na-update ang estudyante." : "Nadagdag ang estudyante.");
+      showToast(editingId ? "Student updated." : "Student added.");
     } catch (error) {
       showToast(error.message, "error");
     }
@@ -329,21 +329,21 @@
 
   function removeEmployee(id) {
     const employee = db.getEmployees().find((item) => item.id === id);
-    if (!employee || !confirm(`Burahin si ${employee.name}?`)) return;
+    if (!employee || !confirm(`Delete ${employee.name}?`)) return;
     try {
       db.deleteEmployee(id);
       renderAll();
-      showToast("Nabura ang estudyante.");
+      showToast("Student deleted.");
     } catch (error) {
       showToast(error.message, "error");
     }
   }
 
   function removeRecord(id) {
-    if (!confirm("Burahin ang attendance record na ito?")) return;
+    if (!confirm("Delete this attendance record?")) return;
     db.deleteAttendance(id);
     renderAll();
-    showToast("Nabura ang attendance record.");
+    showToast("Attendance record deleted.");
   }
 
   function changeSection() {
@@ -351,7 +351,7 @@
     const validSection = ["dashboard", "employees", "records"].includes(sectionId) ? sectionId : "dashboard";
     $$(".page-section").forEach((section) => section.classList.toggle("active", section.id === validSection));
     $$('[data-section-link]').forEach((link) => link.classList.toggle("active", link.dataset.sectionLink === validSection));
-    $("#pageTitle").textContent = { dashboard: "Dashboard", employees: "Mga Estudyante", records: "Attendance Records" }[validSection];
+    $("#pageTitle").textContent = { dashboard: "Dashboard", employees: "Students", records: "Attendance Records" }[validSection];
     document.body.classList.remove("menu-open");
     $("#menuButton").setAttribute("aria-expanded", "false");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -359,9 +359,9 @@
 
   function exportCsv() {
     const records = db.getAttendance();
-    if (!records.length) return showToast("Wala pang record na maaaring i-export.", "error");
+    if (!records.length) return showToast("There are no records to export.", "error");
     const studentsById = new Map(db.getEmployees().map((student) => [student.id, student]));
-    const rows = [["Petsa", "Student ID", "Pangalan", "Section", "Time In", "Time Out", "Oras", "Status"]];
+    const rows = [["Date", "Student ID", "Name", "Section", "Time In", "Time Out", "Hours", "Status"]];
     records.forEach((record) => rows.push([
       db.localDateKey(record.timeIn), record.employeeCode, record.employeeName,
       studentsById.get(record.employeeId)?.role || "",
@@ -370,14 +370,14 @@
     ]));
     const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\r\n");
     downloadFile(`attendance-${TODAY()}.csv`, "\ufeff" + csv, "text/csv;charset=utf-8");
-    showToast("Na-download ang CSV file.");
+    showToast("CSV file downloaded.");
   }
 
   elements.timeInButton.addEventListener("click", () => {
     try {
       db.timeIn(elements.employeeSelect.value);
       renderAll();
-      showToast("Matagumpay ang time in.");
+      showToast("Time in recorded successfully.");
     } catch (error) { showToast(error.message, "error"); }
   });
 
@@ -385,7 +385,7 @@
     try {
       db.timeOut(elements.employeeSelect.value);
       renderAll();
-      showToast("Matagumpay ang time out.");
+      showToast("Time out recorded successfully.");
     } catch (error) { showToast(error.message, "error"); }
   });
 
@@ -417,7 +417,7 @@
   $("#closeBackupButton").addEventListener("click", () => elements.backupDialog.close());
   $("#downloadBackupButton").addEventListener("click", () => {
     downloadFile(`attendance-backup-${TODAY()}.json`, db.exportBackup(), "application/json");
-    showToast("Na-download ang backup.");
+    showToast("Backup downloaded.");
   });
   $("#restoreFileInput").addEventListener("change", async (event) => {
     const file = event.target.files[0];
@@ -426,16 +426,16 @@
       db.importBackup(await file.text());
       elements.backupDialog.close();
       renderAll();
-      showToast("Matagumpay na na-restore ang backup.");
+      showToast("Backup restored successfully.");
     } catch (error) { showToast(error.message, "error"); }
     event.target.value = "";
   });
   $("#resetDataButton").addEventListener("click", () => {
-    if (!confirm("Sigurado ka bang buburahin ang lahat ng students at attendance records?")) return;
+    if (!confirm("Are you sure you want to delete all students and attendance records?")) return;
     db.reset();
     elements.backupDialog.close();
     renderAll();
-    showToast("Nabura na ang lahat ng data.");
+    showToast("All data deleted.");
   });
   $("#menuButton").addEventListener("click", () => {
     document.body.classList.toggle("menu-open");
