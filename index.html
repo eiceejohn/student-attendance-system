@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fil">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#2563eb" />
+    <title>Student Attendance Log</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#dashboard" aria-label="Student Attendance home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M8 3v3m8-3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm3 9 2 2 4-4" /></svg>
+          </span>
+          <span><strong>Student Attendance</strong><small>Logging System</small></span>
+        </a>
+
+        <nav aria-label="Main navigation">
+          <a class="nav-link active" href="#dashboard" data-section-link="dashboard">
+            <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z" /></svg>
+            Dashboard
+          </a>
+          <a class="nav-link" href="#employees" data-section-link="employees">
+            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87m-2-11.96a4 4 0 0 1 0 7.75" /></svg>
+            Mga Estudyante
+          </a>
+          <a class="nav-link" href="#records" data-section-link="records">
+            <svg viewBox="0 0 24 24"><path d="M9 11h6m-6 4h6M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" /></svg>
+            Attendance Records
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>Ang data ay naka-save sa browser na ito.</p>
+          <button class="text-button" id="openBackupButton" type="button">Backup at restore</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="icon-button menu-button" id="menuButton" type="button" aria-label="Buksan ang menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+          <div class="page-heading">
+            <p id="todayLabel">Ngayong araw</p>
+            <h1 id="pageTitle">Dashboard</h1>
+          </div>
+          <div class="live-clock" aria-live="polite">
+            <span id="liveTime">--:-- --</span>
+            <small>Philippine Time</small>
+          </div>
+        </header>
+
+        <section class="page-section active" id="dashboard" aria-labelledby="pageTitle">
+          <div class="hero-card">
+            <div class="hero-copy">
+              <span class="eyebrow">Daily time record</span>
+              <h2>Magandang araw!</h2>
+              <p>Piliin ang iyong pangalan, pagkatapos ay mag-time in o time out.</p>
+            </div>
+            <div class="clock-panel">
+              <label for="clockSectionSelect">Section</label>
+              <select id="clockSectionSelect">
+                <option value="">Pumili ng section</option>
+              </select>
+              <label class="student-label" for="employeeSelect">Pangalan ng estudyante</label>
+              <div class="select-row">
+                <select id="employeeSelect" disabled>
+                  <option value="">Pumili muna ng section</option>
+                </select>
+                <button class="secondary-button compact" id="quickAddButton" type="button" aria-label="Magdagdag ng estudyante">+ Idagdag</button>
+              </div>
+              <p class="status-line" id="employeeStatus">Pumili muna ng section at estudyante.</p>
+              <div class="clock-actions">
+                <button class="primary-button time-in-button" id="timeInButton" type="button" disabled>
+                  <svg viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                  Time In
+                </button>
+                <button class="secondary-button time-out-button" id="timeOutButton" type="button" disabled>
+                  <svg viewBox="0 0 24 24"><path d="m10 17 5-5-5-5m5 5H3m11-9h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5" /></svg>
+                  Time Out
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid" aria-label="Attendance summary">
+            <article class="stat-card blue">
+              <span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 0 2 2 4-4" /></svg></span>
+              <div><p>Pumasok Ngayon</p><strong id="presentCount">0</strong></div>
+            </article>
+            <article class="stat-card amber">
+              <span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l2 2m7-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></span>
+              <div><p>Late Ngayon</p><strong id="lateCount">0</strong></div>
+            </article>
+            <article class="stat-card green">
+              <span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M3 12h18M12 3v18M7 7l10 10M17 7 7 17" /></svg></span>
+              <div><p>Oras Ngayon</p><strong id="totalHours">0.0</strong><small>oras</small></div>
+            </article>
+            <article class="stat-card violet">
+              <span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10-4v6m3-3h-6" /></svg></span>
+              <div><p>Mga Estudyante</p><strong id="employeeCount">0</strong></div>
+            </article>
+          </div>
+
+          <div class="content-card">
+            <div class="card-heading">
+              <div><span class="eyebrow">Live summary</span><h2>Attendance ngayong araw</h2></div>
+              <a class="inline-link" href="#records">Tingnan lahat</a>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Estudyante</th><th>Section</th><th>Time In</th><th>Time Out</th><th>Oras</th><th>Status</th></tr></thead>
+                <tbody id="todayTableBody"></tbody>
+              </table>
+              <div class="empty-state" id="todayEmptyState">
+                <span><svg viewBox="0 0 24 24"><path d="M8 3v3m8-3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" /></svg></span>
+                <h3>Wala pang attendance</h3><p>Ang unang time in ngayong araw ay lalabas dito.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" id="employees" aria-labelledby="employeesTitle">
+          <div class="section-toolbar">
+            <div><span class="eyebrow">Class list</span><h2 id="employeesTitle">Mga Estudyante</h2><p>Idagdag at pamahalaan ang listahan ng estudyante.</p></div>
+            <button class="primary-button" id="addEmployeeButton" type="button">+ Bagong estudyante</button>
+          </div>
+          <div class="content-card">
+            <div class="filter-row">
+              <label class="search-field">
+                <svg viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg>
+                <input id="employeeSearch" type="search" placeholder="Maghanap ng pangalan o Student ID" />
+              </label>
+              <label class="filter-select">
+                <span class="sr-only">Section</span>
+                <select id="employeeSectionFilter"><option value="">Lahat ng section</option></select>
+              </label>
+              <span class="result-count" id="employeeResultCount">0 estudyante</span>
+            </div>
+            <div class="student-sections" id="employeeGrid"></div>
+            <div class="empty-state" id="employeeEmptyState">
+              <span><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /></svg></span>
+              <h3>Wala pang estudyante</h3><p>Magdagdag ng estudyante para makapagsimulang mag-log.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" id="records" aria-labelledby="recordsTitle">
+          <div class="section-toolbar">
+            <div><span class="eyebrow">History</span><h2 id="recordsTitle">Attendance Records</h2><p>Salain, tingnan, at i-export ang mga attendance log.</p></div>
+            <button class="secondary-button" id="exportCsvButton" type="button">
+              <svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2" /></svg>
+              Export CSV
+            </button>
+          </div>
+          <div class="content-card">
+            <div class="filter-row records-filter">
+              <label><span>Petsa</span><input id="recordDateFilter" type="date" /></label>
+              <label><span>Section</span><select id="recordSectionFilter"><option value="">Lahat ng section</option></select></label>
+              <label><span>Estudyante</span><select id="recordEmployeeFilter"><option value="">Lahat</option></select></label>
+              <button class="text-button clear-filter" id="clearFiltersButton" type="button">I-clear ang filters</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Petsa</th><th>Estudyante</th><th>Section</th><th>Time In</th><th>Time Out</th><th>Oras</th><th>Status</th><th></th></tr></thead>
+                <tbody id="recordsTableBody"></tbody>
+              </table>
+              <div class="empty-state" id="recordsEmptyState">
+                <span><svg viewBox="0 0 24 24"><path d="M9 11h6m-6 4h6M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" /></svg></span>
+                <h3>Walang nakitang record</h3><p>Subukang baguhin ang filters o mag-time in muna.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="employeeDialog">
+      <form method="dialog" id="employeeForm">
+        <div class="dialog-heading">
+          <div><span class="eyebrow">Student details</span><h2 id="employeeDialogTitle">Bagong Estudyante</h2></div>
+          <button class="icon-button" value="cancel" type="submit" aria-label="Isara">×</button>
+        </div>
+        <input id="editingEmployeeId" type="hidden" />
+        <label class="form-field"><span>Buong pangalan</span><input id="employeeNameInput" type="text" maxlength="80" placeholder="Hal. Juan Dela Cruz" autocomplete="name" required /></label>
+        <label class="form-field"><span>Student ID</span><input id="employeeCodeInput" type="text" maxlength="24" placeholder="Hal. 2026-001" required /></label>
+        <label class="form-field"><span>Grade / Section / Course</span><input id="employeeRoleInput" type="text" list="sectionSuggestions" maxlength="60" placeholder="Hal. Grade 10 - Rizal" required /></label>
+        <datalist id="sectionSuggestions">
+          <option value="Grade 7 - Rizal"></option><option value="Grade 7 - Mabini"></option>
+          <option value="Grade 8 - Bonifacio"></option><option value="Grade 8 - Luna"></option>
+          <option value="Grade 9 - Jacinto"></option><option value="Grade 9 - Del Pilar"></option>
+          <option value="Grade 10 - Aguinaldo"></option><option value="Grade 10 - Silang"></option>
+          <option value="Grade 11 - STEM A"></option><option value="Grade 12 - HUMSS A"></option>
+        </datalist>
+        <div class="dialog-actions"><button class="secondary-button" value="cancel" type="submit">Kanselahin</button><button class="primary-button" id="saveEmployeeButton" type="button">I-save</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="backupDialog">
+      <div class="dialog-heading">
+        <div><span class="eyebrow">Data tools</span><h2>Backup at Restore</h2></div>
+        <button class="icon-button" id="closeBackupButton" type="button" aria-label="Isara">×</button>
+      </div>
+      <p class="dialog-note">I-download ang backup para may kopya ka ng students at attendance records.</p>
+      <div class="backup-options">
+        <button class="secondary-button" id="downloadBackupButton" type="button">I-download ang backup</button>
+        <label class="secondary-button file-button">Mag-restore ng backup<input id="restoreFileInput" type="file" accept="application/json,.json" /></label>
+      </div>
+      <div class="danger-zone"><div><strong>I-reset ang lahat</strong><p>Permanenteng buburahin ang lahat ng lokal na data.</p></div><button class="danger-button" id="resetDataButton" type="button">Burahin lahat</button></div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
