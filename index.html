@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#132f68" />
     <title>Student Attendance Log</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -15,9 +15,10 @@
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M8 3v3m8-3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm3 9 2 2 4-4" /></svg>
           </span>
-          <span><strong>Student Attendance</strong><small>Logging System</small></span>
+          <span><strong>Student Attendance</strong><small>Smart logging system</small></span>
         </a>
 
+        <span class="nav-label">Workspace</span>
         <nav aria-label="Main navigation">
           <a class="nav-link active" href="#dashboard" data-section-link="dashboard">
             <svg viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z" /></svg>
@@ -34,8 +35,16 @@
         </nav>
 
         <div class="sidebar-footer">
-          <p>Ang data ay naka-save sa browser na ito.</p>
-          <button class="text-button" id="openBackupButton" type="button">Backup at restore</button>
+          <div class="storage-card">
+            <span class="storage-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-4Zm-3 9 2 2 4-4" /></svg>
+            </span>
+            <div><strong>Local at ligtas</strong><p>Naka-save sa browser na ito ang data.</p></div>
+          </div>
+          <button class="backup-link" id="openBackupButton" type="button">
+            <svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2" /></svg>
+            Backup at restore
+          </button>
         </div>
       </aside>
 
@@ -48,25 +57,42 @@
             <p id="todayLabel">Ngayong araw</p>
             <h1 id="pageTitle">Dashboard</h1>
           </div>
-          <div class="live-clock" aria-live="polite">
-            <span id="liveTime">--:-- --</span>
-            <small>Philippine Time</small>
+          <div class="topbar-actions">
+            <div class="system-status" title="Gumagana ang system">
+              <span aria-hidden="true"></span> System ready
+            </div>
+            <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Gamitin ang dark mode" title="Palitan ang theme">
+              <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" /></svg>
+              <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z" /></svg>
+            </button>
+            <div class="live-clock" aria-live="polite">
+              <span id="liveTime">--:-- --</span>
+              <small>Philippine Time</small>
+            </div>
           </div>
         </header>
 
         <section class="page-section active" id="dashboard" aria-labelledby="pageTitle">
           <div class="hero-card">
             <div class="hero-copy">
-              <span class="eyebrow">Daily time record</span>
-              <h2>Magandang araw!</h2>
-              <p>Piliin ang iyong pangalan, pagkatapos ay mag-time in o time out.</p>
+              <span class="hero-badge"><i aria-hidden="true"></i> Daily time record</span>
+              <h2 id="heroGreeting">Magandang araw!</h2>
+              <p>Mabilis at organisadong attendance para sa bawat section. Piliin ang iyong pangalan upang makapagsimula.</p>
+              <div class="hero-meta" aria-label="Attendance information">
+                <span><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg> Late cutoff: 8:15 AM</span>
+                <span><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></svg> Auto-saved</span>
+              </div>
             </div>
             <div class="clock-panel">
-              <label for="clockSectionSelect">Section</label>
+              <div class="clock-panel-heading">
+                <span class="panel-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 2m6-2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></span>
+                <div><strong>Attendance terminal</strong><small>Piliin ang iyong detalye</small></div>
+              </div>
+              <label for="clockSectionSelect"><span>1</span> Section</label>
               <select id="clockSectionSelect">
                 <option value="">Pumili ng section</option>
               </select>
-              <label class="student-label" for="employeeSelect">Pangalan ng estudyante</label>
+              <label class="student-label" for="employeeSelect"><span>2</span> Pangalan ng estudyante</label>
               <div class="select-row">
                 <select id="employeeSelect" disabled>
                   <option value="">Pumili muna ng section</option>

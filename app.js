@@ -24,7 +24,8 @@
     todayEmptyState: $("#todayEmptyState"),
     recordsTableBody: $("#recordsTableBody"),
     recordsEmptyState: $("#recordsEmptyState"),
-    toast: $("#toast")
+    toast: $("#toast"),
+    themeToggle: $("#themeToggle")
   };
 
   function escapeHtml(value) {
@@ -72,10 +73,60 @@
     URL.revokeObjectURL(url);
   }
 
+  const THEME_KEY = "attendance_theme";
+
+  function getSavedTheme() {
+    try {
+      return localStorage.getItem(THEME_KEY);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function applyTheme(theme) {
+    const selectedTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = selectedTheme;
+    elements.themeToggle.setAttribute(
+      "aria-label",
+      selectedTheme === "dark" ? "Gamitin ang light mode" : "Gamitin ang dark mode"
+    );
+
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute("content", selectedTheme === "dark" ? "#091225" : "#132f68");
+    }
+  }
+
+  function initializeTheme() {
+    const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+    applyTheme(getSavedTheme() || preferredTheme);
+  }
+
+  function toggleTheme() {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    try {
+      localStorage.setItem(THEME_KEY, nextTheme);
+    } catch (error) {
+      // The theme still changes for this visit when storage is unavailable.
+    }
+    applyTheme(nextTheme);
+  }
+
   function updateClock() {
     const now = new Date();
     $("#liveTime").textContent = new Intl.DateTimeFormat("en-PH", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true }).format(now);
     $("#todayLabel").textContent = new Intl.DateTimeFormat("fil-PH", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(now);
+
+    const hour = now.getHours();
+    const greeting = hour < 12
+      ? "Magandang umaga!"
+      : hour < 18
+        ? "Magandang hapon!"
+        : "Magandang gabi!";
+    const heroGreeting = $("#heroGreeting");
+    if (heroGreeting) heroGreeting.textContent = greeting;
   }
 
   function populateEmployeeOptions() {
@@ -232,7 +283,8 @@
     $$(".delete-record").forEach((button) => button.addEventListener("click", () => removeRecord(button.dataset.id)));
   }
 
-  function renderAll() {    populateEmployeeOptions();
+  function renderAll() {
+    populateEmployeeOptions();
     renderEmployeeStatus();
     renderDashboard();
     renderEmployees();
@@ -321,7 +373,8 @@
     showToast("Na-download ang CSV file.");
   }
 
-  elements.timeInButton.addEventListener("click", () => {    try {
+  elements.timeInButton.addEventListener("click", () => {
+    try {
       db.timeIn(elements.employeeSelect.value);
       renderAll();
       showToast("Matagumpay ang time in.");
@@ -389,9 +442,11 @@
     $("#menuButton").setAttribute("aria-expanded", document.body.classList.contains("menu-open"));
   });
   $("#sidebarBackdrop").addEventListener("click", () => document.body.classList.remove("menu-open"));
+  elements.themeToggle.addEventListener("click", toggleTheme);
   window.addEventListener("hashchange", changeSection);
 
   db.seedSampleStudents();
+  initializeTheme();
   updateClock();
   setInterval(updateClock, 1000);
   changeSection();
